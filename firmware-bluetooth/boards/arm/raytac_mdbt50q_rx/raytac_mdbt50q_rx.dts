@@ -84,27 +84,6 @@
 	pinctrl-names = "default", "sleep";
 };
 
-&qspi {
-	status = "okay";
-	pinctrl-0 = <&qspi_default>;
-	pinctrl-1 = <&qspi_sleep>;
-	pinctrl-names = "default", "sleep";
-	gd25q16: gd25q16@0 {
-		compatible = "nordic,qspi-nor";
-		reg = <0>;
-		writeoc = "pp4o";
-		readoc = "read4io";
-		sck-frequency = <16000000>;
-		label = "GD25Q16";
-		jedec-id = [c8 40 15];
-		size = <16777216>;
-		has-dpd;
-		t-enter-dpd = <20000>;
-		t-exit-dpd = <20000>;
-		quad-enable-requirements = "S2B1v1";
-	};
-};
-
 &flash0 {
 
 	partitions {
@@ -117,20 +96,20 @@
             reg = <0x00000000 0x00026000>;
         };
 
-        code_partition: partition@26000 {
-            label = "code_partition";
-            reg = <0x00026000 0x000c6000>;
-        };
+		code_partition: partition@26000 {
+			label = "Application";
+			reg = <0x00026000 DT_SIZE_K(796)>;
+		};
 
-        storage_partition: partition@ec000 {
-            label = "storage";
-            reg = <0x000ec000 0x00008000>;
-        };
+		storage_partition: partition@ed000 {
+			label = "storage";
+			reg = <0x0000ed000 DT_SIZE_K(28)>;
+		};
 
-        boot_partition: partition@f4000 {
-            label = "adafruit_boot";
-            reg = <0x000f4000 0x0000c000>;
-        };
+		boot_partition: partition@f4000 {
+			label = "UF2";
+			reg = <0x000f4000 DT_SIZE_K(48)>;
+		};
 	};
 };
 
