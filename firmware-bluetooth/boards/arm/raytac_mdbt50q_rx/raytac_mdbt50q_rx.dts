@@ -10,7 +10,7 @@
 
 / {
 	model = "Raytac MDBT50Q-RX";
-	compatible = "seeed,xiao-nrf52840";
+	compatible = "raytac,mdbt50q_rx";
 
 	chosen {
 		zephyr,console = &uart0;
@@ -89,6 +89,20 @@
 	pinctrl-0 = <&qspi_default>;
 	pinctrl-1 = <&qspi_sleep>;
 	pinctrl-names = "default", "sleep";
+	gd25q16: gd25q16@0 {
+		compatible = "nordic,qspi-nor";
+		reg = <0>;
+		writeoc = "pp4o";
+		readoc = "read4io";
+		sck-frequency = <16000000>;
+		label = "GD25Q16";
+		jedec-id = [c8 40 15];
+		size = <16777216>;
+		has-dpd;
+		t-enter-dpd = <20000>;
+		t-exit-dpd = <20000>;
+		quad-enable-requirements = "S2B1v1";
+	};
 };
 
 &flash0 {
@@ -100,12 +114,12 @@
 
         sd_partition: partition@0 {
             label = "softdevice";
-            reg = <0x00000000 0x00027000>;
+            reg = <0x00000000 0x00026000>;
         };
 
-        code_partition: partition@27000 {
+        code_partition: partition@26000 {
             label = "code_partition";
-            reg = <0x00027000 0x000c5000>;
+            reg = <0x00026000 0x000c6000>;
         };
 
         storage_partition: partition@ec000 {
